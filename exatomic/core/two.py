@@ -255,12 +255,16 @@ def _compute_bonds(atom, atom_two, bond_extra=0.45, **radii):
         bond_extra (float): Additional amount for determining bonds
         radii: Custom radii to use for computing bonds
     """
-    atom['symbol'] = atom['symbol'].astype('category')
-    radmap = {sym: sym2radius[sym][0] for sym in atom['symbol'].cat.categories}
+    atom._revert_categories()
+    atom_two._revert_categories()
+    symbol = atom['symbol'].astype('category')
+    radmap = {sym: sym2radius[sym][0] for sym in symbol.cat.categories}
     radmap.update(radii)
     maxdr = (atom_two['atom0'].map(atom['symbol']).map(radmap) +
              atom_two['atom1'].map(atom['symbol']).map(radmap) + bond_extra)
     atom_two['bond'] = np.where(atom_two['dr'] <= maxdr, True, False)
+    atom._set_categories()
+    atom_two._set_categories()
 
 
 def _compute_bond_count(atom, atom_two):

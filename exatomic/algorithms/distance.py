@@ -247,8 +247,8 @@ def pdist(x, y, z, index, dmax=8.0):
     return dx, dy, dz, dr, atom0, atom1
 
 
-@nb.jit(nopython=True, nogil=True, parallel=nbpll)
-def pdist_nv(x, y, z, index, dmax=8.0):
+#@nb.jit(nopython=True, nogil=True, parallel=nbpll)
+def pdist_nv(x, y, z, index, dmax):
     """
     Pairwise distance computation for points in cartesian space.
 
